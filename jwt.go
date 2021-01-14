@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
-	"log"
 	"strings"
 	"time"
 )
@@ -123,8 +122,6 @@ func (jwt *Provider) generate(body *Body) string {
 func (jwt *Provider) sign(headerBase64 string, bodyBase64 string) []byte {
 	toSign := fmt.Sprintf("%s.%s", headerBase64, bodyBase64)
 	hasher := hmac.New(sha256.New, []byte(jwt.Config.Secret))
-	log.Println(jwt.Config.Secret)
-	log.Println([]byte(jwt.Config.Secret))
 	hasher.Write([]byte(toSign))
 	return hasher.Sum(nil)
 }

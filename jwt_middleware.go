@@ -13,7 +13,7 @@ func (mw JwtMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get("Authorization")
 	
 	err := mw.jwt.Validate(token)
-	if err != nil {
+	if err == nil {
 		mw.next.ServeHTTP(w, r)
 		return
 	}
@@ -22,7 +22,7 @@ func (mw JwtMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func NewJwtMiddleware(next http.Handler, jwt *Provider) *JwtMiddleware {
+func RequiredJwtAuthentication(next http.Handler, jwt *Provider) *JwtMiddleware {
 	return &JwtMiddleware{
 		next: next,
 		jwt: jwt,
